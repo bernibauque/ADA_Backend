@@ -1,0 +1,5 @@
+{
+    "mensaje" : "Hola, este es un servidor que responde con JSON!",
+    "autor": "Berni y chicas",
+    "fecha":"30-08-2024"
+}
