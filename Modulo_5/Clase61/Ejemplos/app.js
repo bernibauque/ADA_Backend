@@ -24,7 +24,3 @@ app.use(express.json());
 // Configuramos el prefijo "/api" para todas las rutas definidas en el archivo "routes".
 // Esto significa que cualquier ruta registrada en "routes" estará bajo "/api".
 app.use("/api", routes);
-
-// Exportamos la instancia de la aplicación para que pueda ser utilizada en otros archivos,
-// como en "server.js", donde se inicializa el servidor.
-module.exports = app;
