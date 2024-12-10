@@ -23,3 +23,6 @@ do {
     console.log(contador2);
     contador2--;
 } while (contador2 >= 1);
+
+
+
