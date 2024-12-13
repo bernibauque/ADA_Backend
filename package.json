@@ -10,6 +10,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/lodash": "^4.17.9"
   },
   "name": "ADA_TRABAJOS",
