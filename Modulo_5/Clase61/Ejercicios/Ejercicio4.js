@@ -1,54 +1,39 @@
-// Importamos el módulo express para crear el servidor
-const express = require("express");
-
-// Inicializamos una aplicación de Express
+// Importar dependencias
+const express = require('express');
 const app = express();
+const PORT = 3000;
+const users = []; // Array para almacenar usuarios
 
-// Middleware para permitir que el servidor interprete solicitudes con cuerpo JSON
+// Configurar el body-parser para leer JSON
 app.use(express.json());
 
-// Creamos un arreglo temporal para almacenar productos
-const products = [
-  { id: 1, name: "Producto A" },
-  { id: 2, name: "Producto B" },
-];
-
-// Configuramos un endpoint PATCH para actualizar el nombre de un producto
-app.patch("/products/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del producto desde la ruta
-  const { name } = req.body; // Obtenemos el nuevo nombre del producto desde el cuerpo de la solicitud
-
-  // Buscamos el producto por su ID
-  const product = products.find((product) => product.id === parseInt(id));
-
-  // Si el producto no existe, respondemos con un error 404
-  if (!product) return res.status(404).send("Producto no encontrado");
-
-  // Si existe, actualizamos el nombre
-  product.name = name;
-
-  // Respondemos con el producto actualizado
-  res.json(product);
+// Ruta GET para obtener todos los usuarios
+app.get('/users', (req, res) => {
+    res.json(users);
 });
 
-// Configuramos un endpoint DELETE para eliminar un producto por su ID
-app.delete("/products/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del producto desde la ruta
-
-  // Encontramos el índice del producto a eliminar
-  const index = products.findIndex((product) => product.id === parseInt(id));
-
-  // Si el producto no se encuentra, respondemos con un error 404
-  if (index === -1) return res.status(404).send("Producto no encontrado");
-
-  // Eliminamos el producto del arreglo
-  products.splice(index, 1);
-
-  // Respondemos con un mensaje de éxito
-  res.send("Producto eliminado");
+// Ruta POST para crear un nuevo usuario
+app.post('/users', (req, res) => {
+    const { id, name, email } = req.body;
+    users.push({ id, name, email });
+    res.json({ message: 'Usuario creado', user: { id, name, email } });
 });
 
-// Iniciamos el servidor en el puerto 3000
-app.listen(3000, () => {
-  console.log("Servidor ejecutándose en http://localhost:3000");
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+/*
+Pasos para probar con Postman:
+
+Hacer una solicitud GET a /users para obtener la lista de usuarios.
+Hacer una solicitud POST a /users enviando un JSON como:
+
+{
+    "id": 1,
+    "name": "Ana",
+    "email": "ana@example.com"
+}
+Verificar que la respuesta incluya el mensaje y los datos enviados.
+*/

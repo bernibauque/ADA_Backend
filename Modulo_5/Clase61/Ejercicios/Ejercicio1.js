@@ -1,44 +1,33 @@
-// Importamos el módulo express para crear el servidor
-const express = require("express");
-
-// Inicializamos una aplicación de Express
+// Importar dependencias
+const express = require('express');
 const app = express();
+const PORT = 3000;
 
-// Middleware para permitir que el servidor interprete solicitudes con cuerpo JSON
+// Configurar el body-parser para leer JSON
 app.use(express.json());
 
-// Creamos un arreglo inicial que actuará como una base de datos temporal para los usuarios
-const users = [
-  { id: 1, name: "Ana" }, // Usuario con ID 1 y nombre "Ana"
-  { id: 2, name: "Luis" }, // Usuario con ID 2 y nombre "Luis"
-];
-
-// Configuramos un endpoint GET para obtener la lista de usuarios
-app.get("/users", (req, res) => {
-  // Cuando alguien hace una solicitud GET a "/users", respondemos con la lista completa
-  res.json(users); // Enviamos el arreglo de usuarios como respuesta en formato JSON
+// Ruta GET
+app.get('/hello', (req, res) => {
+    res.json({ message: 'Hola, mundo!' });
 });
 
-// Configuramos un endpoint POST para agregar nuevos usuarios
-app.post("/users", (req, res) => {
-  // Extraemos los valores "id" y "name" del cuerpo de la solicitud (req.body)
-  const { id, name } = req.body;
-
-  // Validamos que ambos campos estén presentes en el cuerpo de la solicitud
-  if (!id || !name) {
-    // Si falta alguno, respondemos con un error 400 y un mensaje
-    return res.status(400).json({ message: "ID y Name son requeridos" });
-  }
-
-  // Si los datos son válidos, añadimos el nuevo usuario al arreglo
-  users.push({ id, name });
-
-  // Respondemos con un código de estado 201 (Creado) y un mensaje de éxito
-  res.status(201).json({ message: "Usuario agregado", user: { id, name } });
+// Ruta POST
+app.post('/hello', (req, res) => {
+    const { name } = req.body;
+    res.json({ message: `Hola, ${name}!` });
 });
 
-// Iniciamos el servidor en el puerto 3000
-app.listen(3000, () => {
-  // Mostramos un mensaje en la consola cuando el servidor esté listo
-  console.log("Servidor ejecutándose en http://localhost:3000");
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+//Pasos para probar con Postman:
+
+//Abrir Postman y hacer una solicitud GET a http://localhost:3000/hello.
+//Hacer una solicitud POST a http://localhost:3000/hello enviando un body como:
+/*
+{
+    "name": "Ana"
+}
+    */

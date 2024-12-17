@@ -1,54 +1,34 @@
-// Importamos el módulo express para crear el servidor
-const express = require("express");
-
-// Inicializamos una aplicación de Express
+// Importar dependencias
+const express = require('express');
 const app = express();
+const PORT = 3000;
 
-// Middleware para permitir que el servidor interprete solicitudes con cuerpo JSON
+// Configurar el body-parser para leer JSON
 app.use(express.json());
 
-// Creamos un arreglo temporal para almacenar usuarios
-const users = [
-  { id: 1, name: "Usuario A" },
-  { id: 2, name: "Usuario B" },
-];
-
-// Configuramos un endpoint PATCH para actualizar el nombre de un usuario
-app.patch("/users/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del usuario desde la ruta
-  const { name } = req.body; // Obtenemos el nuevo nombre del usuario desde el cuerpo de la solicitud
-
-  // Buscamos el usuario por su ID
-  const user = users.find((user) => user.id === parseInt(id));
-
-  // Si el usuario no existe, respondemos con un error 404
-  if (!user) return res.status(404).send("Usuario no encontrado");
-
-  // Si existe, actualizamos el nombre
-  user.name = name;
-
-  // Respondemos con el usuario actualizado
-  res.json(user);
+// Ruta POST con validación de datos
+app.post('/register', (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+    res.json({ message: 'Usuario registrado con éxito!' });
 });
 
-// Configuramos un endpoint DELETE para eliminar un usuario por su ID
-app.delete("/users/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del usuario desde la ruta
-
-  // Encontramos el índice del usuario a eliminar
-  const index = users.findIndex((user) => user.id === parseInt(id));
-
-  // Si el usuario no se encuentra, respondemos con un error 404
-  if (index === -1) return res.status(404).send("Usuario no encontrado");
-
-  // Eliminamos el usuario del arreglo
-  users.splice(index, 1);
-
-  // Respondemos con un mensaje de éxito
-  res.send("Usuario eliminado");
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
-// Iniciamos el servidor en el puerto 3000
-app.listen(3000, () => {
-  console.log("Servidor ejecutándose en http://localhost:3000");
-});
+/*
+Pasos para probar con Postman:
+
+Enviar un body válido:
+
+{
+    "username": "usuario1",
+    "password": "123456"
+}
+Verificar que el servidor responda correctamente.
+Enviar un body con un campo vacío y verificar el error.
+*/
