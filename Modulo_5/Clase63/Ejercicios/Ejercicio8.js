@@ -1,15 +1,21 @@
-const express = require("express");
-const cors = require("cors");
-const app = express();
+// Endpoint GET para obtener estadísticas de usuarios
+app.get('/users/stats', (req, res) => {
+  if (users.length === 0) {
+    return res.status(404).json({ error: "No hay usuarios disponibles para calcular estadísticas." });
+  }
 
-app.use(cors()); // Permite solicitudes desde cualquier origen
-app.use(express.json());
+  const totalUsers = users.length;
+  const averageAge = users.reduce((sum, user) => sum + user.age, 0) / totalUsers;
+  const youngestUser = users.reduce((youngest, user) =>
+    user.age < youngest.age ? user : youngest, users[0]);
+  const oldestUser = users.reduce((oldest, user) =>
+    user.age > oldest.age ? user : oldest, users[0]);
 
-// Endpoint GET para datos públicos
-app.get("/data", (req, res) => {
-  res.json({ data: "Esta es información pública" });
+  res.json({
+    totalUsers,
+    averageAge,
+    youngestUser,
+    oldestUser
+  });
 });
 
-app.listen(3000, () => {
-  console.log("Servidor ejecutándose en http://localhost:3000");
-});

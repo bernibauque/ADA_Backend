@@ -1,32 +1,14 @@
-const express = require("express");
-const app = express();
+// Endpoint DELETE para eliminar un usuario
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params; // Capturamos el parámetro dinámico ID
+  const userIndex = users.findIndex(user => user.id === parseInt(id)); // Buscamos el usuario por ID
 
-app.use(express.json());
-
-// Arreglo inicial de productos
-const products = [
-  { id: 1, name: "Laptop" },
-  { id: 2, name: "Mouse" },
-];
-
-// Endpoint GET para listar todos los productos
-app.get("/products", (req, res) => {
-  res.json(products);
-});
-
-// Endpoint POST para agregar un nuevo producto
-app.post("/products", (req, res) => {
-  const { id, name } = req.body;
-
-  if (!id || !name) {
-    return res.status(400).json({ message: "ID y Name son requeridos" });
+  if (userIndex === -1) {
+    return res.status(404).json({ error: "Usuario no encontrado" }); // Usuario no existe
   }
 
-  products.push({ id, name });
+  // Eliminamos el usuario de la lista
+  const deletedUser = users.splice(userIndex, 1);
 
-  res.status(201).json({ message: "Producto agregado", product: { id, name } });
-});
-
-app.listen(3000, () => {
-  console.log("Servidor ejecutándose en http://localhost:3000");
+  res.json({ message: "Usuario eliminado", usuario: deletedUser[0] }); // Confirmamos la eliminación
 });

@@ -1,44 +1,38 @@
-// Importamos el módulo express para crear el servidor
-const express = require("express");
-
-// Inicializamos una aplicación de Express
+const express = require('express');
 const app = express();
+const port = 3000;
 
-// Middleware para permitir que el servidor interprete solicitudes con cuerpo JSON
 app.use(express.json());
 
-// Creamos un arreglo inicial que actuará como una base de datos temporal para los usuarios
-const users = [
-  { id: 1, name: "Ana" }, // Usuario con ID 1 y nombre "Ana"
-  { id: 2, name: "Luis" }, // Usuario con ID 2 y nombre "Luis"
+// Lista inicial de usuarios
+let users = [
+  { id: 1, name: "Alice", email: "alice@example.com" },
+  { id: 2, name: "Bob", email: "bob@example.com" }
 ];
 
-// Configuramos un endpoint GET para obtener la lista de usuarios
-app.get("/users", (req, res) => {
-  // Cuando alguien hace una solicitud GET a "/users", respondemos con la lista completa
-  res.json(users); // Enviamos el arreglo de usuarios como respuesta en formato JSON
-});
+// Endpoint PUT para actualizar un usuario
+app.put('/users/:id', (req, res) => {
+  const { id } = req.params; // Capturamos el parámetro dinámico ID
+  const { name, email } = req.body; // Desestructuramos el cuerpo de la solicitud
 
-// Configuramos un endpoint POST para agregar nuevos usuarios
-app.post("/users", (req, res) => {
-  // Extraemos los valores "id" y "name" del cuerpo de la solicitud (req.body)
-  const { id, name } = req.body;
+  const userIndex = users.findIndex(user => user.id === parseInt(id)); // Buscamos el usuario por ID
 
-  // Validamos que ambos campos estén presentes en el cuerpo de la solicitud
-  if (!id || !name) {
-    // Si falta alguno, respondemos con un error 400 y un mensaje
-    return res.status(400).json({ message: "ID y Name son requeridos" });
+  if (userIndex === -1) {
+    return res.status(404).json({ error: "Usuario no encontrado" }); // Usuario no existe
   }
 
-  // Si los datos son válidos, añadimos el nuevo usuario al arreglo
-  users.push({ id, name });
+  if (!name || !email) {
+    return res.status(400).json({ error: "Datos incompletos. Se requiere name y email." }); // Validación de datos
+  }
 
-  // Respondemos con un código de estado 201 (Creado) y un mensaje de éxito
-  res.status(201).json({ message: "Usuario agregado", user: { id, name } });
+  // Actualizamos los datos del usuario
+  users[userIndex] = { id: parseInt(id), name, email };
+
+  res.json(users[userIndex]); // Respondemos con el usuario actualizado
 });
 
-// Iniciamos el servidor en el puerto 3000
-app.listen(3000, () => {
-  // Mostramos un mensaje en la consola cuando el servidor esté listo
-  console.log("Servidor ejecutándose en http://localhost:3000");
+// Servidor en ejecución
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
+

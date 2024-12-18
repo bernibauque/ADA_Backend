@@ -1,54 +1,14 @@
-// Importamos el módulo express para crear el servidor
-const express = require("express");
+// Endpoint GET para contar usuarios con un dominio específico
+app.get('/users/count', (req, res) => {
+  const { domain } = req.query; // Capturamos el parámetro de consulta
 
-// Inicializamos una aplicación de Express
-const app = express();
+  if (!domain) {
+    return res.status(400).json({ error: "Se requiere el parámetro 'domain'." });
+  }
 
-// Middleware para permitir que el servidor interprete solicitudes con cuerpo JSON
-app.use(express.json());
+  // Contamos los usuarios con el dominio especificado
+  const count = users.filter(user => user.email.endsWith(domain)).length;
 
-// Creamos un arreglo temporal para almacenar productos
-const products = [
-  { id: 1, name: "Producto A" },
-  { id: 2, name: "Producto B" },
-];
-
-// Configuramos un endpoint PATCH para actualizar el nombre de un producto
-app.patch("/products/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del producto desde la ruta
-  const { name } = req.body; // Obtenemos el nuevo nombre del producto desde el cuerpo de la solicitud
-
-  // Buscamos el producto por su ID
-  const product = products.find((product) => product.id === parseInt(id));
-
-  // Si el producto no existe, respondemos con un error 404
-  if (!product) return res.status(404).send("Producto no encontrado");
-
-  // Si existe, actualizamos el nombre
-  product.name = name;
-
-  // Respondemos con el producto actualizado
-  res.json(product);
+  res.json({ domain, count }); // Respondemos con el conteo
 });
 
-// Configuramos un endpoint DELETE para eliminar un producto por su ID
-app.delete("/products/:id", (req, res) => {
-  const { id } = req.params; // Obtenemos el ID del producto desde la ruta
-
-  // Encontramos el índice del producto a eliminar
-  const index = products.findIndex((product) => product.id === parseInt(id));
-
-  // Si el producto no se encuentra, respondemos con un error 404
-  if (index === -1) return res.status(404).send("Producto no encontrado");
-
-  // Eliminamos el producto del arreglo
-  products.splice(index, 1);
-
-  // Respondemos con un mensaje de éxito
-  res.send("Producto eliminado");
-});
-
-// Iniciamos el servidor en el puerto 3000
-app.listen(3000, () => {
-  console.log("Servidor ejecutándose en http://localhost:3000");
-});
