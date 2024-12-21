@@ -1,0 +1,34 @@
+{
+  "info": {
+    "name": "Quotes Database",
+    "version": "1.0.0",
+    "total": 5
+  },
+  "quotes": [
+    {
+      "id": "1",
+      "text": "El exito te persigue, pero tu eres mas rapido",
+      "author": "Anonimo"
+    },
+    {
+      "text": "El fracaso es la oportunidad de comenzar de nuevo con más inteligencia.",
+      "author": "Henry Ford",
+      "id": "NaN"
+    },
+    {
+      "text": "El fracaso es la oportunidad de comenzar de nuevo",
+      "author": "Henry Ford",
+      "id": "NaN"
+    },
+    {
+      "text": "El fracaso es la oportunidad de comenzar de nuevo",
+      "author": "Henry Ford",
+      "id": "NaN"
+    },
+    {
+      "text": "El fracaso es la oportunidad de comenzar de nuevo",
+      "author": "Henry Ford",
+      "id": "6"
+    }
+  ]
+}
