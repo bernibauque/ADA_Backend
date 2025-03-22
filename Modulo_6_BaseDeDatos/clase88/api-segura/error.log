@@ -1,0 +1,4 @@
+{"level":"error","message":"Intento de inicio de sesion fallido para usuario: Berni","timestamp":"2025-03-18T01:00:23.388Z"}
+{"level":"error","message":"Error: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined","timestamp":"2025-03-18T01:00:39.639Z"}
+{"level":"error","message":"Intento de inicio de sesion fallido para usuario: undefined","timestamp":"2025-03-18T01:01:34.500Z"}
+{"level":"error","message":"Error: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received type number (1234)","timestamp":"2025-03-18T01:02:41.830Z"}

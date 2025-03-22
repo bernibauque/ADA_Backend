@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Variables de entorno
+.env
+
+# Archivos del editor
+.vscode/
+.idea/
+.DS_Store
+
+# Logs y caché
+logs
+*.log
+*.gz
